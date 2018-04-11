@@ -114,7 +114,7 @@ public class Compilador {
     //Adiciona um token a lista
     public  void add(String tipo){
        // System.out.println("Acgou Token "+palavraAtual);
-        Token t = new Token(tipo, palavraAtual);
+        Token t = new Token(tipo, palavraAtual,qtdLinha);
         tokens.add(t);
         palavraAtual = "";
         status = 0;

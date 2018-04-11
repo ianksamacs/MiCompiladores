@@ -11,7 +11,6 @@
 public class AnaliseLexico {
     
     int matriz[][];
-    
     public AnaliseLexico(){ 
                                  //  L  N  E  -  _  +  =  /  *  !  <  >  ;  ,  (  )  {  }  [  ]  "  . En  S  &  |
        matriz = new int[][] /*00*/{{ 1, 3, 0, 4,31, 9,15,10, 8,17,15,15,21,21,21,21,21,21,21,21,22,21, 0,31,18,20},

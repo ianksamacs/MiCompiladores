@@ -9,12 +9,13 @@
  * @author Home
  */
 public class Token {
-    private String tipo;
-    private String valor;
+    private String tipo, valor;
+    private int linha;
     
-    public Token(String tipo, String value){
+    public Token(String tipo, String valor, int linha){
         this.tipo = tipo;
-        valor = value;
+        this.valor = valor;
+        this.linha = linha;
     }
     
     public String getTipo(){
@@ -23,5 +24,9 @@ public class Token {
     
     public String getValor(){
         return valor;
+    }
+    
+    public int getLinha(){
+        return linha;
     }
 }
