@@ -14,75 +14,113 @@ import java.util.List;
 
 /**
  *
- * @author Home
+ * @author Ianc Samac
  */
 public class Compilador {
     
-    static ArrayList<Token> tokens;
-    static int status, lStatus;
-    static String palavraAtual;
+    ArrayList<Token> tokens;
+    int status;
+    String palavraAtual;
+    char letraAnterior;
+    boolean hasLetra;
+    int qtdLinha;
     
-    
-    public static void main(String[] args) {
+    public Compilador() {
+        
         tokens = new ArrayList<Token>();
         status = 0;
-        lStatus = status;
+        letraAnterior=' ';
+        hasLetra = false;
         palavraAtual = "";
-        int test;
+        
+    }
+    
+    public void compilar(){
         AnaliseLexico al = new AnaliseLexico();
         FileReader file = null;
         BufferedReader lerArq = null;
         String linha = "yy";
+        qtdLinha = 0;
         try {
             file = new FileReader("entrada.txt");
             lerArq = new BufferedReader(file);
             linha = lerArq.readLine();
             while (linha != null){
-                  for(int i=0;i<linha.length();i++){
-                      char c = linha.charAt(i);
-                      test = al.nextStep(status, c, palavraAtual, 0);
-                      next(test,c, 0);
-                  }
-                  test = al.nextStep(status, 'z', palavraAtual, 1); 
-                  next(test,'x', 1);
-                  linha = lerArq.readLine();
+                qtdLinha++;
+                for(int i=0;i<linha.length();i++){
+                    char c = linha.charAt(i);
+                    //envia para o analizador o estado e a palavra atual, junto com a entrada
+                    //o 0 indica que o ainda não é o fim da linha ou arquivo
+                    if(hasLetra){
+                        hasLetra = !hasLetra;
+                        next(al.nextStep(status, letraAnterior, palavraAtual, 0),letraAnterior, 0);
+                    }
+                    next(al.nextStep(status, c, palavraAtual, 0),c, 0);
+                }
+                if(hasLetra){
+                        hasLetra = !hasLetra;
+                        next(al.nextStep(status, letraAnterior, palavraAtual, 0),letraAnterior, 0);
+                    }
+                //envia um caractere qlqr junto com o digito 1 para informar um fim de linha/arquivo
+                next(al.nextStep(status, ' ', palavraAtual, 1),' ', 1);
+                linha = lerArq.readLine();
+                
             }
+           
             listar();
         }catch(IOException e){
             System.out.println("Arquivo de entrada não encontrado!");
         }
     }
     
-    public static void next(int test, char c, int end){
-        if(end != 1 && c != ' '){
-            palavraAtual += c;
-            //System.out.println("status: "+status+" palavra: "+palavraAtual+" entrada: "+c);
+    public void next(int test, char c, int end){
+       //System.out.println("Palavra Atual: "+palavraAtual+"//Entrada: "+c + " -->"+test);
+        if(test < 0 || test >30){
+            letraAnterior = c;
+            hasLetra = true;
         }
         if(test == -1){
             add("Palavra reservada");
         }else if(test == -2){
             add("Identificador");   
+        }else if(test == -3){
+            add("Numero");           
         }else if(test == -4){
-            add("Numero");                  
-        }else if(test == 32){
-            System.out.println("Error");
+            add("Operador Aritmetico");           
+        }else if(test == -5){
+            add("Operador Relacional");           
+        }else if(test == -6){
+            add("Operador Logico");           
+        }else if(test == -7){
+            add("Delimitador");           
+        }else if(test == -8){
+            add("Cadeia de Caracteres");           
+        }else if(test == 33){
+            System.out.println("Comentario"); 
             status = 0;
             palavraAtual = "";
+        }else if(test == 32){
+            add("Error na linha "+qtdLinha);
         }else{
-            lStatus = status;
+            if(c!=' ')
+                palavraAtual += c;
             status = test;
         }
                        
     }
     
-    public static void add(String tipo){
+    
+    //Adiciona um token a lista
+    public  void add(String tipo){
+       // System.out.println("Acgou Token "+palavraAtual);
         Token t = new Token(tipo, palavraAtual);
         tokens.add(t);
         palavraAtual = "";
         status = 0;
     }
     
-    public static void listar(){
+    //Lista todos os Tokens
+    public  void listar(){
         Iterator it = tokens.iterator();
         Token aux = null;
         while(it.hasNext()){
