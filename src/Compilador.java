@@ -105,6 +105,7 @@ public class Compilador {
             if(c!=' ')
                 palavraAtual += c;
             status = test;
+            
         }
                        
     }
