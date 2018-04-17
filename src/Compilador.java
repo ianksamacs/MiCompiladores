@@ -95,6 +95,10 @@ public class Compilador {
             add("Delimitador");           
         }else if(test == -8){
             add("Cadeia de Caracteres");           
+        }else if(test == -9){
+            String numero = palavraAtual.substring(0, palavraAtual.length()-1);
+            add("Numero", numero);
+            add("Delimitador", ".");
         }else if(test == 33){
             System.out.println("Comentario"); 
             status = 0;
@@ -115,6 +119,14 @@ public class Compilador {
     public  void add(String tipo){
        // System.out.println("Acgou Token "+palavraAtual);
         Token t = new Token(tipo, palavraAtual,qtdLinha);
+        tokens.add(t);
+        palavraAtual = "";
+        status = 0;
+    }
+    
+    public  void add(String tipo, String value){
+       // System.out.println("Acgou Token "+palavraAtual);
+        Token t = new Token(tipo, value,qtdLinha);
         tokens.add(t);
         palavraAtual = "";
         status = 0;

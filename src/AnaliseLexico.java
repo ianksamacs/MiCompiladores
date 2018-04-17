@@ -133,6 +133,8 @@ public class AnaliseLexico {
             //Cadeia de Caracteres
             }else if(q0 == 23){
                 return -8;
+            }else if(q0 == 6){
+                return -9;
             }else{
                 return 32;
             }
