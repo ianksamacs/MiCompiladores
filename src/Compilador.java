@@ -1,6 +1,8 @@
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -19,6 +21,7 @@ import java.util.List;
 public class Compilador {
     
     ArrayList<Token> tokens;
+    ArrayList<Token> tokensErro;
     int status;
     String palavraAtual;
     char letraAnterior;
@@ -28,11 +31,12 @@ public class Compilador {
     public Compilador() {
         
         tokens = new ArrayList<Token>();
+        tokensErro = new ArrayList<Token>();
         status = 0;
         letraAnterior=' ';
         hasLetra = false;
         palavraAtual = "";
-        
+       
     }
     
     public void compilar(){
@@ -40,9 +44,18 @@ public class Compilador {
         FileReader file = null;
         BufferedReader lerArq = null;
         String linha = "yy";
-        qtdLinha = 0;
+        Iterator it;
+        
+        ArrayList<String> entradas = new ArrayList<String>();
+        Arquivo arq = new Arquivo();
+        entradas = arq.lerCodigos();
+        it = entradas.iterator();
+         qtdLinha = 0;
+         String aux;
         try {
-            file = new FileReader("entrada.txt");
+            while(it.hasNext()){
+            aux = (String) it.next();
+            file = new FileReader("entrada/"+aux);
             lerArq = new BufferedReader(file);
             linha = lerArq.readLine();
             while (linha != null){
@@ -66,10 +79,18 @@ public class Compilador {
                 linha = lerArq.readLine();
                 
             }
-           
-            listar();
+            arq.escreverSaidaLexico(tokens, tokensErro, aux);
+            tokens = new ArrayList<Token>();
+            tokensErro = new ArrayList<Token>();
+            status = 0;
+            letraAnterior=' ';
+            hasLetra = false;
+            palavraAtual = "";
+            qtdLinha = 0;
+           }
+            
         }catch(IOException e){
-            System.out.println("Arquivo de entrada não encontrado!");
+            System.out.println("ERROR!");
         }
     }
     
@@ -80,33 +101,34 @@ public class Compilador {
             hasLetra = true;
         }
         if(test == -1){
-            add("Palavra reservada");
+            add("PRE");
         }else if(test == -2){
-            add("Identificador");   
+            add("IDE");   
         }else if(test == -3){
-            add("Numero");           
+            add("NRO");           
         }else if(test == -4){
-            add("Operador Aritmetico");           
+            add("DEL");           
         }else if(test == -5){
-            add("Operador Relacional");           
+            add("REL");           
         }else if(test == -6){
-            add("Operador Logico");           
+            add("LOG");           
         }else if(test == -7){
-            add("Delimitador");           
+            add("ART");           
         }else if(test == -8){
-            add("Cadeia de Caracteres");           
+            add("CCA");           
         }else if(test == -9){
             String numero = palavraAtual.substring(0, palavraAtual.length()-1);
-            add("Numero", numero);
-            add("Delimitador", ".");
+            add("NRO", numero);
+            add("DEL", ".");
         }else if(test == 33){
-            System.out.println("Comentario"); 
             status = 0;
             palavraAtual = "";
         }else if(test == 32){
-            add("Error na linha "+qtdLinha);
+            addErro("Err ");
         }else{
             if(c!=' ')
+                palavraAtual += c;
+            else if(status==11 && status==12 && status==14 && status==24 && status==22)
                 palavraAtual += c;
             status = test;
             
@@ -117,15 +139,21 @@ public class Compilador {
     
     //Adiciona um token a lista
     public  void add(String tipo){
-       // System.out.println("Acgou Token "+palavraAtual);
         Token t = new Token(tipo, palavraAtual,qtdLinha);
         tokens.add(t);
         palavraAtual = "";
         status = 0;
     }
     
+    public  void addErro(String tipo){
+        Token t = new Token(tipo, palavraAtual,qtdLinha);
+        tokensErro.add(t);
+        palavraAtual = "";
+        status = 0;
+        System.out.println("Error");
+    }
+    
     public  void add(String tipo, String value){
-       // System.out.println("Acgou Token "+palavraAtual);
         Token t = new Token(tipo, value,qtdLinha);
         tokens.add(t);
         palavraAtual = "";
@@ -133,12 +161,26 @@ public class Compilador {
     }
     
     //Lista todos os Tokens
-    public  void listar(){
+    public  void listar() throws IOException{
         Iterator it = tokens.iterator();
         Token aux = null;
         while(it.hasNext()){
             aux = (Token)it.next();
             System.out.println(aux.getTipo()+";"+aux.getValor());
         }
+    }
+    
+    public  void exportarErros() throws IOException{
+        Iterator it = tokens.iterator();
+        Token aux = null;
+        FileWriter file = new FileWriter("saida.txt");
+        BufferedWriter saidaArq = new BufferedWriter(file);
+        while(it.hasNext()){
+            aux = (Token)it.next();
+            if(aux.getTipo().equals("Erro")){
+               saidaArq.write(aux.getTipo()+";"+aux.getValor()+"\n"); 
+            }
+        }
+        saidaArq.close();
     }
 }

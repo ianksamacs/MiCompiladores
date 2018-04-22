@@ -99,8 +99,15 @@ public class AnaliseLexico {
     public int nextStep(int q0, char c, String l, int endl){
         int step = entrada(c),  nextS;
         if(endl==1){
-            step = 22;
+             step = 22;
+             if(q0 == 11 || q0 == 12){
+                 return 32;
+             }
         }
+        
+        
+        
+        
         nextS= matriz[q0][step];
         if(nextS==33)
             return 33;
@@ -135,10 +142,11 @@ public class AnaliseLexico {
                 return -8;
             }else if(q0 == 6){
                 return -9;
-            }else{
+            }else {
                 return 32;
             }
         }
+        
         return nextS; //matriz[q0][entrada(c)];
     }
     
