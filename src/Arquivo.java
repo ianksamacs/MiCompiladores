@@ -74,10 +74,17 @@ public class Arquivo
             gravar.printf("Nao ha erros lexicos\n");
         } else { // Se houver erros léxicos, os insere no arquivo de saída.    
             for (Token erro : erros) {
+                String error = null;
+                
+                if(erro.getValor().charAt(0) == '/'){
+                    error = "comentario_mal_formado";
+                }else if(erro.getValor().charAt(0) == '"'){
+                    error = "cadeia_mal_formada";
+                }
                 if(erro.getLinha()<10){
-                    gravar.println("0"+erro.getLinha() + " " + erro.getTipo() + " " + erro.getValor());
+                    gravar.println("0"+erro.getLinha() + " " + erro.getValor() + " " + error);
                 }else{
-                    gravar.println(erro.getLinha() + " " + erro.getTipo() + " " + erro.getValor());                   
+                    gravar.println(erro.getLinha() + " " + erro.getTipo() + " " + erro.getValor() + " " + error);                   
                 }            
             }
         }

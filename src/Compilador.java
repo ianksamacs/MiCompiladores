@@ -101,35 +101,42 @@ public class Compilador {
             hasLetra = true;
         }
         if(test == -1){
+            removerEspaços();
             add("PRE");
         }else if(test == -2){
+            removerEspaços();
             add("IDE");   
         }else if(test == -3){
+            removerEspaços();
             add("NRO");           
         }else if(test == -4){
+            removerEspaços();
             add("DEL");           
         }else if(test == -5){
+            removerEspaços();
             add("REL");           
         }else if(test == -6){
+            removerEspaços();
             add("LOG");           
         }else if(test == -7){
+            removerEspaços();
             add("ART");           
         }else if(test == -8){
+            removerEspaçosInicio();
             add("CCA");           
         }else if(test == -9){
             String numero = palavraAtual.substring(0, palavraAtual.length()-1);
+            numero = numero.replaceAll(" ", "");
             add("NRO", numero);
             add("DEL", ".");
         }else if(test == 33){
             status = 0;
             palavraAtual = "";
         }else if(test == 32){
-            addErro("Err ");
+            removerEspaçosInicio();
+            addErro("Err");
         }else{
-            if(c!=' ')
-                palavraAtual += c;
-            else if(status==11 && status==12 && status==14 && status==24 && status==22)
-                palavraAtual += c;
+            palavraAtual += c;
             status = test;
             
         }
@@ -143,6 +150,19 @@ public class Compilador {
         tokens.add(t);
         palavraAtual = "";
         status = 0;
+    }
+    
+    public void removerEspaços(){
+        palavraAtual = palavraAtual.replaceAll(" ", "");
+    }
+    
+    public void removerEspaçosInicio(){
+        int i;
+        for(i =0; i<palavraAtual.length(); i++){
+            if(palavraAtual.charAt(i) != ' ')
+                break;
+        }
+        palavraAtual = palavraAtual.substring(i, palavraAtual.length());
     }
     
     public  void addErro(String tipo){

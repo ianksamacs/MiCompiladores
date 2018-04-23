@@ -1,17 +1,17 @@
 01 IDE exemplo
 01 IDE teste
 01 ART ;
-03 PRE float
+03 IDE float
 03 IDE f
 03 REL =
 03 NRO 3
 03 IDE a
 03 DEL +
 03 ART ;
-05 PRE string
+05 IDE string
 05 IDE msg
 05 REL =
-07 PRE if
+07 IDE if
 07 ART (
 07 IDE f
 07 REL >=
@@ -25,6 +25,6 @@
 08 IDE 	print
 08 ART (
  
-05 Err  "teste
-08 Err  "mensagem);
-12 Err  /*exa869miprocessadoresdelinguagemdeprogramacao
+05 "teste cadeia_mal_formada
+08 "mensagem ); cadeia_mal_formada
+12 Err /* exa869 mi processadores de linguagem de programacao comentario_mal_formado
