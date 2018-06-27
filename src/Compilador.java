@@ -111,7 +111,7 @@ public class Compilador {
             add("NRO");           
         }else if(test == -4){
             removerEspaços();
-            add("DEL");           
+            add("ART");           
         }else if(test == -5){
             removerEspaços();
             add("REL");           
@@ -120,7 +120,7 @@ public class Compilador {
             add("LOG");           
         }else if(test == -7){
             removerEspaços();
-            add("ART");           
+            add("DEL");           
         }else if(test == -8){
             removerEspaçosInicio();
             add("CCA");           

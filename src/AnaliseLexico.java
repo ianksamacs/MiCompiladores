@@ -152,12 +152,18 @@ public class AnaliseLexico {
     
     //verifica se é palavra reservada
     private boolean verificarPR(String l){
+        //removendo os espaços
+        l = l.replaceAll(" ", "");
+        
         String pr[] = {"const", "var", "struct", "typedef", "procedure", "function", "return", "start", "if",
                        "then", "else", "while", "scan", "print", "int", "float", "bool", "string", "true",
                        "false", "extends"};
         for(int i=0; i<pr.length;i++){
-            if(pr[i].equals(l))
+            
+            if(pr[i].equals(l)){
+                //System.out.println("Passou");
                 return true;
+            }
         }
         return false;
     }
