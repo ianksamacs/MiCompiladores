@@ -1,3 +1,5 @@
+package Lexico;
+
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -80,7 +82,7 @@ public class Compilador {
                 
             }
             arq.escreverSaidaLexico(tokens, tokensErro, aux);
-            tokens = new ArrayList<Token>();
+           // tokens = new ArrayList<Token>();
             tokensErro = new ArrayList<Token>();
             status = 0;
             letraAnterior=' ';
@@ -105,7 +107,7 @@ public class Compilador {
             add("PRE");
         }else if(test == -2){
             removerEspaços();
-            add("IDE");   
+            add("ID");   
         }else if(test == -3){
             removerEspaços();
             add("NRO");           
@@ -202,5 +204,11 @@ public class Compilador {
             }
         }
         saidaArq.close();
+    }
+    
+    public ArrayList<Token> getTokens()
+    {   
+        System.out.println(tokens);
+        return tokens;
     }
 }

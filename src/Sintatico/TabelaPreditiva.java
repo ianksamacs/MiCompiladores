@@ -3,14 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+package Sintatico;
 
 /**
  *
- * @author Home
+ * @author Joimar
  */
-public class Main {
-    public static void main(String[] args) {
-        Compilador com = new Compilador();
-        com.compilar();
-    }
+public class TabelaPreditiva {
+    
 }
