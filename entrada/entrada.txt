@@ -1,1 +1,1 @@
-if(expressaoLogicaOuRelacional) then comando
+if(expressaoLogicaOuRelacional i then comando

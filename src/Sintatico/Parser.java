@@ -23,6 +23,7 @@ public class Parser {
   private  ArrayList<Token> tokens;
   private int contador = 0;
   private int tamanho = 0;
+  private  ArrayList<String> erros = new ArrayList();
   
   public Parser(ArrayList<Token> tokens)
   {
@@ -109,57 +110,30 @@ public class Parser {
   
   public boolean If()
   {
-    if(tokens.get(contador).getValor().equals("if"))
-    {
-        
-        exibe();
-            if(array())
-            {
-        
-                contador++;
-                if(tokens.get(contador).getValor().equals("(") && array())
-                {exibe();
-                    contador++;
-                    if(expressaoLogicaOuRelacional() && array())
-                    {exibe();
-                    
-                        contador++;
-                        if(tokens.get(contador).getValor().equals(")") && array())
-                        {
-                            exibe();
-                        
-                            contador++;
-                            if(tokens.get(contador).getValor().equals("then") && array())
-                            {exibe();
-                            
-                                contador++;
-                                if(comando())
-                                {exibe();
-                                
-                                    if(Else())
-                                    {
-                                    
-                                        return true;
-                                    }
-                                    else{System.out.println("Erro1"); return false;}
-                                }
-                                else{System.out.println("Erro2"); return false;}
-                            }
-                            else{System.out.println("Erro3"); return false;}
-                        }
-                        else{System.out.println("Erro4"); return false;}
-                    }
-                    else{System.out.println("Erro5"); return false;}
-                }
-                else{System.out.println("Erro6"); return false;}
-            }
-        
-        return true;
-        
-    }
-    else{System.out.println("Erro"); return false;}
+    boolean certo = true;
+    if(tokens.get(contador).getValor().equals("if") && array()){ exibe(); contador++;}
+    else{ certo = false; erroAdd("if",tokens.get(contador)); if(array()) contador++;}
     
-      
+    if(tokens.get(contador).getValor().equals("(") && array()){ exibe(); contador++;}
+    else{certo = false; erroAdd("(" ,tokens.get(contador)); if(array()) contador++;}
+    
+    if(comando() && array()){exibe(); contador++;}
+    else{certo = false; if(array()) contador++;}
+    
+    if(tokens.get(contador).getValor().equals(")") && array()){ exibe(); contador++;}
+    else{certo = false; exibe(); 
+    erroAdd(")",tokens.get(contador)); if(array()){ contador++;}}
+    
+    if(tokens.get(contador).getValor().equals("then") && array()){exibe(); contador++;}
+    else{certo = false; erroAdd("then",tokens.get(contador)); if(array()) contador++;}
+    
+    if(comando() && array()){exibe(); contador++;}
+    else{ certo = false; if(array()) contador++;}
+    
+    if(Else() && array()){exibe(); contador++;}
+    else{certo = false; if(array()) contador++;}
+    System.out.print(erros);
+    return certo;
   }
   
   
@@ -191,9 +165,9 @@ public class Parser {
   
   }
   
-  public boolean array()
+  public boolean array()  //para o nao sair do escopo da lista
   {
-      if(contador<tamanho) return true;
+      if(contador<tamanho-1) return true;
       else return false;
   
   }
@@ -204,4 +178,12 @@ public class Parser {
       System.out.println(tokens.get(contador).getValor());
   
   }
+  
+  public void erroAdd(String erro, Token token)
+  {
+  
+      erros.add("Esperado "+ erro + " na linha " + token.getLinha());
+  }
+  
+  
 }
