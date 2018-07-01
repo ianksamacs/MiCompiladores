@@ -1,7 +1,9 @@
 01 PRE if
 01 DEL (
-01 ID expressaoLogicaOuRelacional
-01 ID i
+01 ID a
+01 REL >
+01 ID a
+01 DEL )
 01 PRE then
 01 ID comando
  

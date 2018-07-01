@@ -1,1 +1,1 @@
-if(expressaoLogicaOuRelacional i then comando
+if(a > a) then comando

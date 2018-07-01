@@ -117,7 +117,7 @@ public class Parser {
     if(tokens.get(contador).getValor().equals("(") && array()){ exibe(); contador++;}
     else{certo = false; erroAdd("(" ,tokens.get(contador)); if(array()) contador++;}
     
-    if(comando() && array()){exibe(); contador++;}
+    if(expressaoLogicaOuRelacional() && array()){exibe(); contador++;}
     else{certo = false; if(array()) contador++;}
     
     if(tokens.get(contador).getValor().equals(")") && array()){ exibe(); contador++;}
@@ -139,15 +139,47 @@ public class Parser {
   
   public boolean expressaoLogicaOuRelacional()
   {
-  
-      if(tokens.get(contador).getValor().equals("expressaoLogicaOuRelacional"))
-      {
-      
-          return true;
-      }
-      else return false;
-  
+      boolean certo = true;
+      if(tokens.get(contador).getValor().equals("true")
+              || tokens.get(contador).getValor().equals("false")
+               && array()){ exibe();}
+      else if (tokens.get(contador).getValor().equals("!")){exibe();contador++;
+      if(tokens.get(contador).getValor().equals("true")
+              || tokens.get(contador).getValor().equals("false")
+              || tokens.get(contador).getTipo().equals("ID")){exibe();}
+      }else if(expressaoLogica() || expressaoRelacional() && array()){
+          contador++;      }
+      else{ certo = false; erroAdd("operador",tokens.get(contador));}
+      return certo;
   }
+  
+  public boolean expressaoLogica(){
+      boolean certo = true;
+      
+      if(tokens.get(contador).getTipo().equals("ID") 
+              || tokens.get(contador).getTipo().equals("NRO")  && array()){ exibe(); contador++;}
+      else{ certo = false; erroAdd("operador",tokens.get(contador)); if(array()) contador++;}
+      if(tokens.get(contador).getTipo().equals("LOG") && array()){ exibe(); contador++;}
+      else{ certo = false; erroAdd("operadorLogico",tokens.get(contador)); if(array()) contador++;}
+      if(tokens.get(contador).getTipo().equals("ID") 
+              || tokens.get(contador).getTipo().equals("NRO")  && array()){ exibe(); contador++;}
+      else{ certo = false; erroAdd("operando",tokens.get(contador)); if(array()) contador++;}
+      return certo;
+  }
+  
+  public boolean expressaoRelacional(){
+      boolean certo = true;
+      if(tokens.get(contador).getTipo().equals("ID") 
+              || tokens.get(contador).getTipo().equals("true")  && array()){ exibe(); contador++;}
+      else{ certo = false; erroAdd("operador",tokens.get(contador)); if(array()) contador++;}
+      if(tokens.get(contador).getTipo().equals("REL") && array()){ exibe(); contador++;}
+      else{ certo = false; erroAdd("operadorRelacional",tokens.get(contador)); if(array()) contador++;}
+      if(tokens.get(contador).getTipo().equals("ID") 
+              || tokens.get(contador).getTipo().equals("NRO")  && array()){ exibe(); }
+      else{ certo = false; erroAdd("operando",tokens.get(contador));}
+      return certo;
+  }
+  
   
   public boolean Else()
   {
