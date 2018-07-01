@@ -121,8 +121,7 @@ public class Parser {
     else{certo = false; if(array()) contador++;}
     
     if(tokens.get(contador).getValor().equals(")") && array()){ exibe(); contador++;}
-    else{certo = false; exibe(); 
-    erroAdd(")",tokens.get(contador)); if(array()){ contador++;}}
+    else{certo = false; exibe(); erroAdd(")",tokens.get(contador)); if(array()){ contador++;}}
     
     if(tokens.get(contador).getValor().equals("then") && array()){exibe(); contador++;}
     else{certo = false; erroAdd("then",tokens.get(contador)); if(array()) contador++;}
@@ -131,6 +130,7 @@ public class Parser {
     else{ certo = false; if(array()) contador++;}
     
     if(Else() && array()){exibe(); contador++;}
+    else if(Else()==false) contador++;
     else{certo = false; if(array()) contador++;}
     System.out.print(erros);
     return certo;
@@ -183,10 +183,12 @@ public class Parser {
   
   public boolean Else()
   {
-  
-      if(tokens.get(contador).getValor().equals("else")){return true;}
-      else if(comando()) return true;
-      else return false;
+      boolean certo = true;
+      if(tokens.get(contador).getValor().equals("else") && array()){contador++;}
+      else{certo = false; erroAdd("else",tokens.get(contador)); if(array()) contador++; }
+      if(comando() && array()){contador++;}
+      else{certo = false; if(array()) contador++;}
+      return certo;
   
   }
   
